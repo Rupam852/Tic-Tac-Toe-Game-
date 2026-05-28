@@ -480,6 +480,12 @@ export default function App() {
                   id="close-private-room-modal"
                   onClick={() => {
                     playSound("click", settings.soundVolume);
+                    if (onlineRoom && socket && socket.readyState === WebSocket.OPEN) {
+                      socket.send(JSON.stringify({
+                        type: "leave_room",
+                        payload: { roomId: onlineRoom.roomId }
+                      }));
+                    }
                     setShowPrivateRoomModal(false);
                     setOnlineRoom(null);
                   }}

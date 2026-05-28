@@ -159,6 +159,19 @@ async function startServer() {
             const creator = activeSockets.get(currentUserId);
             if (!creator) return;
 
+            // SAFEGUARD: Destroy any existing room previously hosted by this same user to prevent spam/leaks
+            for (const [roomId, room] of activeRooms.entries()) {
+              if (room.creatorId === currentUserId) {
+                const oldTimer = roomTimers.get(roomId);
+                if (oldTimer) {
+                  clearTimeout(oldTimer);
+                  roomTimers.delete(roomId);
+                }
+                activeRooms.delete(roomId);
+                console.log(`[Anti-Spam Cleanup] Destroyed stale room ${roomId} previously hosted by ${currentUserId}`);
+              }
+            }
+
             const code = generateRoomCode();
             const roomId = "private_" + crypto.randomBytes(8).toString("hex");
 
