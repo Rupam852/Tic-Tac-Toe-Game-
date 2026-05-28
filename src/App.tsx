@@ -443,12 +443,13 @@ export default function App() {
 
             {/* Guest Badge */}
             {user && (
-              <div className="flex items-center gap-2 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl shadow-xs">
-                <div className="flex items-center gap-2 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:text-slate-350">
-                  <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span>{user.username}</span>
-                  <span className="text-[10px] text-blue-500 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20 px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-500/5">
-                    Elo: {user.rating}
+              <div className="flex items-center gap-1.5 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-1 rounded-xl shadow-xs shrink-0 max-w-[130px] sm:max-w-none">
+                <div className="flex items-center gap-1 sm:gap-2 px-1.5 sm:px-2.5 py-1 text-xs font-semibold text-slate-600 dark:text-slate-350 min-w-0">
+                  <span className="h-1.5 sm:h-2 w-1.5 sm:w-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+                  <span className="hidden sm:inline truncate max-w-[80px]">{user.username}</span>
+                  <span className="inline sm:hidden font-bold">You</span>
+                  <span className="text-[10px] text-blue-500 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20 px-1 sm:px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-500/5 whitespace-nowrap shrink-0">
+                    {user.rating}
                   </span>
                 </div>
               </div>
@@ -725,7 +726,7 @@ export default function App() {
                   <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
                     
                     {/* Bot Mode Card */}
-                    <div className="group rounded-2xl bg-white dark:bg-slate-900/60 p-6 border border-slate-200 dark:border-slate-850 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
+                    <div className="group rounded-2xl bg-white dark:bg-slate-900/60 p-4.5 sm:p-6 border border-slate-200 dark:border-slate-850 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
                       <div>
                         <div className="bg-blue-500/10 h-11 w-11 rounded-xl flex items-center justify-center text-blue-400 mb-4 border border-blue-500/20">
                           <Monitor className="h-5 w-5" />
@@ -751,7 +752,7 @@ export default function App() {
                     </div>
 
                     {/* Local Mode Card */}
-                    <div className="group rounded-2xl bg-white dark:bg-slate-900/60 p-6 border border-slate-200 dark:border-slate-850 hover:border-rose-500/60 hover:shadow-lg hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
+                    <div className="group rounded-2xl bg-white dark:bg-slate-900/60 p-4.5 sm:p-6 border border-slate-200 dark:border-slate-850 hover:border-rose-500/60 hover:shadow-lg hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
                       <div>
                         <div className="bg-rose-500/10 h-11 w-11 rounded-xl flex items-center justify-center text-rose-400 mb-4 border border-rose-500/20">
                           <Users className="h-5 w-5" />
@@ -779,7 +780,7 @@ export default function App() {
 
                   {/* Private Rooms hosting card */}
                   <div className="lg:col-span-5 space-y-6">
-                    <div className="rounded-2xl bg-white dark:bg-slate-900/60 p-6 border border-slate-200 dark:border-slate-850 shadow-sm">
+                    <div className="rounded-2xl bg-white dark:bg-slate-900/60 p-4.5 sm:p-6 border border-slate-200 dark:border-slate-850 shadow-sm">
                       <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                         10-Min Online Room

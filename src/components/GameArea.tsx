@@ -405,7 +405,7 @@ export default function GameArea({
   return (
     <div className="mx-auto w-full max-w-4xl px-2 py-4">
       {/* Navigation and Title Row */}
-      <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800 mb-6">
+      <div className="flex items-center justify-between pb-4 border-b border-zinc-100 dark:border-zinc-800 mb-6 gap-2 flex-wrap sm:flex-nowrap">
         <button
           id="exit-game-area-btn"
           onClick={() => {
@@ -417,30 +417,41 @@ export default function GameArea({
             sessionStorage.removeItem("session_draws");
             onExit();
           }}
-          className="flex items-center gap-1.5 rounded-xl border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600 dark:border-slate-800 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-900 hover:scale-[1.03] active:scale-[0.97] duration-155"
+          className="flex items-center gap-1 sm:gap-1.5 rounded-xl border border-slate-200 px-2.5 sm:px-4 py-1.5 sm:py-2 text-[11px] sm:text-xs font-semibold text-slate-600 dark:border-slate-800 dark:text-slate-300 transition-all hover:bg-slate-50 dark:hover:bg-slate-900 hover:scale-[1.03] active:scale-[0.97] duration-155 whitespace-nowrap shrink-0"
         >
-          <ArrowLeft className="h-4 w-4" />
-          Leave Match
+          <ArrowLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+          <span className="hidden xs:inline">Leave Match</span>
+          <span className="inline xs:hidden">Leave</span>
         </button>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 justify-end flex-wrap sm:flex-nowrap">
           {mode === "online" && timeLeft && (
-            <div className="flex items-center gap-1.5 bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 px-3 py-1 rounded-full text-xs font-extrabold shadow-sm border border-rose-500/20 animate-pulse">
-              <span className="h-1.5 w-1.5 rounded-full bg-rose-500"></span>
-              <span>Expires in {timeLeft}</span>
+            <div className="flex items-center gap-1 bg-rose-500/10 dark:bg-rose-500/20 text-rose-600 dark:text-rose-400 px-2 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-extrabold shadow-sm border border-rose-500/20 shrink-0">
+              <span className="h-1 sm:h-1.5 w-1 sm:w-1.5 rounded-full bg-rose-500 animate-ping"></span>
+              <span className="hidden xs:inline">Expires in {timeLeft}</span>
+              <span className="inline xs:hidden">{timeLeft}</span>
             </div>
           )}
 
-          <div className="flex items-center gap-1.5">
-            {mode === "single" && <Monitor className="h-4 w-4 text-blue-500" />}
-            {mode === "local" && <Users className="h-4 w-4 text-blue-500" />}
-            {mode === "online" && <Globe className="h-4 w-4 text-blue-500" />}
-            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              {mode === "single" 
-                ? `Vs Robot (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})` 
-                : mode === "local" 
-                ? "Pass & Play" 
-                : "10-Min Room"}
+          <div className="flex items-center gap-1 sm:gap-1.5 text-slate-500 dark:text-slate-400 shrink-0">
+            {mode === "single" && <Monitor className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 animate-pulse" />}
+            {mode === "local" && <Users className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 animate-pulse" />}
+            {mode === "online" && <Globe className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-blue-500 animate-pulse" />}
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
+              <span className="hidden sm:inline">
+                {mode === "single" 
+                  ? `Vs Robot (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})` 
+                  : mode === "local" 
+                  ? "Pass & Play" 
+                  : "10-Min Room"}
+              </span>
+              <span className="inline sm:hidden">
+                {mode === "single" 
+                  ? `Bot (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})` 
+                  : mode === "local" 
+                  ? "Local" 
+                  : "Online"}
+              </span>
             </span>
           </div>
         </div>
@@ -459,16 +470,26 @@ export default function GameArea({
             </div>
 
             {/* Player X Info */}
-            <div className={`flex-1 flex flex-col items-start min-w-0 z-10 p-2 rounded-xl border transition-all duration-200 ${isXActive ? "border-blue-500/35 bg-blue-500/5 shadow-[0_0_12px_rgba(59,130,246,0.15)]" : "border-transparent"}`}>
-              <div className="flex items-center gap-1.5 max-w-full">
-                <span className="text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded">X</span>
-                <span className="text-xs font-bold text-slate-200 truncate">
-                  {mode === "online"
-                    ? (onlineRoom?.state.playerX.uid === user?.uid ? "Player 1 (You)" : "Player 1")
-                    : "Player 1"}
+            <div className={`flex-1 flex flex-col items-start min-w-0 z-10 p-1 sm:p-2 rounded-xl border transition-all duration-200 ${isXActive ? "border-blue-500/35 bg-blue-500/5 shadow-[0_0_12px_rgba(59,130,246,0.15)]" : "border-transparent"}`}>
+              <div className="flex items-center gap-1 sm:gap-1.5 max-w-full">
+                <span className="text-[9px] sm:text-[10px] font-black uppercase bg-blue-500/10 text-blue-400 border border-blue-500/20 px-1 sm:px-1.5 py-0.5 rounded shrink-0">X</span>
+                <span className="text-[10px] sm:text-xs font-bold text-slate-200 truncate">
+                  {mode === "online" ? (
+                    onlineRoom?.state.playerX.uid === user?.uid ? (
+                      <>
+                        <span className="hidden sm:inline">Player 1 (You)</span>
+                        <span className="inline sm:hidden">P1 (You)</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="hidden sm:inline">Player 1</span>
+                        <span className="inline sm:hidden">P1</span>
+                      </>
+                    )
+                  ) : "Player 1"}
                 </span>
               </div>
-              <span className="text-[9px] text-slate-400 truncate mt-0.5 font-mono max-w-full">
+              <span className="text-[8px] sm:text-[9px] text-slate-400 truncate mt-0.5 font-mono max-w-[65px] sm:max-w-[100px]">
                 {mode === "online" 
                   ? onlineRoom?.state.playerX.username 
                   : mode === "single" 
@@ -476,23 +497,23 @@ export default function GameArea({
                   : "Local Play"}
               </span>
               {mode === "online" && (
-                <span className="text-[9px] text-blue-400 font-semibold mt-0.5">
+                <span className="text-[8px] sm:text-[9px] text-blue-400 font-semibold mt-0.5">
                   Elo: {onlineRoom?.state.playerX.rating}
                 </span>
               )}
             </div>
 
             {/* VS Divider with central scores */}
-            <div className="flex flex-col items-center px-3 shrink-0 z-10">
+            <div className="flex flex-col items-center px-1.5 sm:px-3 shrink-0 z-10">
               <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">VS</span>
               {mode === "online" ? (
-                <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-805 text-[11px] font-black font-mono text-slate-350 mt-1" title={`Draws: ${onlineRoom?.state.draws || 0}`}>
+                <div className="flex items-center gap-1 bg-slate-950 px-1.5 sm:px-2.5 py-0.5 rounded-full border border-slate-805 text-[10px] sm:text-[11px] font-black font-mono text-slate-350 mt-1" title={`Draws: ${onlineRoom?.state.draws || 0}`}>
                   <span>{onlineRoom?.state.scoreX || 0}</span>
                   <span className="text-slate-650">:</span>
                   <span>{onlineRoom?.state.scoreO || 0}</span>
                 </div>
               ) : (
-                <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-800 text-[11px] font-black font-mono text-slate-350 mt-1">
+                <div className="flex items-center gap-1 bg-slate-950 px-1.5 sm:px-2.5 py-0.5 rounded-full border border-slate-800 text-[10px] sm:text-[11px] font-black font-mono text-slate-350 mt-1">
                   <span>{sessionWinsX}</span>
                   <span className="text-slate-650">:</span>
                   <span>{sessionWinsO}</span>
@@ -501,20 +522,35 @@ export default function GameArea({
             </div>
 
             {/* Player O Info */}
-            <div className={`flex-1 flex flex-col items-end min-w-0 z-10 p-2 rounded-xl border transition-all duration-200 ${isOActive ? "border-rose-500/35 bg-rose-500/5 shadow-[0_0_12px_rgba(244,63,94,0.15)]" : "border-transparent"}`}>
-              <div className="flex items-center gap-1.5 max-w-full">
-                <span className="text-xs font-bold text-slate-200 truncate">
-                  {mode === "online"
-                    ? (onlineRoom?.state.playerO
-                        ? (onlineRoom.state.playerO.uid === user?.uid ? "Player 2 (You)" : "Player 2")
-                        : "Waiting...")
-                    : mode === "single"
-                    ? "Robot"
-                    : "Player 2"}
+            <div className={`flex-1 flex flex-col items-end min-w-0 z-10 p-1 sm:p-2 rounded-xl border transition-all duration-200 ${isOActive ? "border-rose-500/35 bg-rose-500/5 shadow-[0_0_12px_rgba(244,63,94,0.15)]" : "border-transparent"}`}>
+              <div className="flex items-center gap-1 sm:gap-1.5 max-w-full">
+                <span className="text-[10px] sm:text-xs font-bold text-slate-200 truncate">
+                  {mode === "online" ? (
+                    onlineRoom?.state.playerO ? (
+                      onlineRoom.state.playerO.uid === user?.uid ? (
+                        <>
+                          <span className="hidden sm:inline">Player 2 (You)</span>
+                          <span className="inline sm:hidden">P2 (You)</span>
+                        </>
+                      ) : (
+                        <>
+                          <span className="hidden sm:inline">Player 2</span>
+                          <span className="inline sm:hidden">P2</span>
+                        </>
+                      )
+                    ) : (
+                      <>
+                        <span className="hidden sm:inline">Waiting...</span>
+                        <span className="inline sm:hidden">Wait...</span>
+                      </>
+                    )
+                  ) : mode === "single"
+                  ? "Robot"
+                  : "Player 2"}
                 </span>
-                <span className="text-[10px] font-black uppercase bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1.5 py-0.5 rounded">O</span>
+                <span className="text-[9px] sm:text-[10px] font-black uppercase bg-rose-500/10 text-rose-400 border border-rose-500/20 px-1 sm:px-1.5 py-0.5 rounded shrink-0">O</span>
               </div>
-              <span className="text-[9px] text-slate-400 truncate mt-0.5 font-mono max-w-full">
+              <span className="text-[8px] sm:text-[9px] text-slate-400 truncate mt-0.5 font-mono max-w-[65px] sm:max-w-[100px]">
                 {mode === "online" 
                   ? (onlineRoom?.state.playerO?.username || "Connecting...") 
                   : mode === "single" 
@@ -522,7 +558,7 @@ export default function GameArea({
                   : "Local Play"}
               </span>
               {mode === "online" && onlineRoom?.state.playerO && (
-                <span className="text-[9px] text-rose-400 font-semibold mt-0.5">
+                <span className="text-[8px] sm:text-[9px] text-rose-400 font-semibold mt-0.5">
                   Elo: {onlineRoom.state.playerO.rating}
                 </span>
               )}
