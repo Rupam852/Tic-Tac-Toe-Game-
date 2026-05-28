@@ -545,7 +545,7 @@ export default function GameArea({
           </div>
 
           {/* Core Interactive Board Grid (Touch area exceeds 44px boundaries) */}
-          <div className="relative aspect-square w-full max-w-sm rounded-2xl bg-slate-55 p-4 border border-slate-200/50 dark:bg-[#0B1120]/45 dark:border-slate-800 shadow-md overflow-hidden">
+          <div className="relative aspect-square w-full max-w-sm rounded-2xl bg-slate-100 p-4 border border-slate-200/50 dark:bg-[#0B1120]/45 dark:border-slate-800 shadow-md overflow-hidden">
             
             {/* Expiry overlay */}
             {isExpired && (
@@ -679,7 +679,7 @@ export default function GameArea({
 
         {/* Dynamic Communication Socket Chat Drawer (Online matches only) */}
         {mode === "online" && (
-          <div className="md:col-span-5 w-full flex flex-col h-96 md:h-[432px] bg-white rounded-xl border border-slate-205 dark:bg-[#0B1120]/45 dark:border-slate-800 p-4 shadow-sm overflow-hidden">
+          <div className="md:col-span-5 w-full flex flex-col h-96 md:h-[432px] bg-white rounded-xl border border-slate-200 dark:bg-[#0B1120]/45 dark:border-slate-800 p-4 shadow-sm overflow-hidden">
             <h5 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider border-b pb-2 mb-3 flex items-center gap-1.5 dark:border-slate-800">
               <MessageCircleCode className="h-4 w-4 text-blue-500" />
               Room Live Chat & Taunts

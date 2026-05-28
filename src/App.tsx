@@ -371,13 +371,13 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-blue-600/30 selection:text-blue-300">
+    <div className="min-h-screen bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 font-sans antialiased overflow-x-hidden selection:bg-blue-600/30 selection:text-blue-300 transition-colors duration-200">
       
       {/* Background soft glowing design elements */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: "8s" }}></div>
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: "12s" }}></div>
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/5 dark:bg-blue-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: "8s" }}></div>
+        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-500/5 dark:bg-purple-500/10 rounded-full blur-[120px] animate-pulse" style={{ animationDuration: "12s" }}></div>
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:40px_40px]"></div>
       </div>
 
       {/* Floating toasts container */}
@@ -403,7 +403,7 @@ export default function App() {
       </div>
 
       {/* Sticky Premium Header navigation */}
-      <header className="sticky top-0 z-40 bg-slate-950/85 border-b border-slate-900 backdrop-blur-md">
+      <header className="sticky top-0 z-40 bg-white/80 dark:bg-slate-950/85 border-b border-slate-200 dark:border-slate-900 backdrop-blur-md transition-colors duration-200">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
           <div
             onClick={() => {
@@ -417,9 +417,9 @@ export default function App() {
               X
             </div>
             <div>
-              <h1 className="text-base font-black tracking-tight text-white flex items-center gap-1.5 leading-none italic select-none">
+              <h1 className="text-base font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5 leading-none italic select-none">
                 Tic-Tac-Toe
-                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-400 not-italic font-extrabold text-[10px] tracking-wide uppercase bg-slate-900 px-2 py-0.5 rounded-md border border-slate-800">
+                <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-indigo-400 not-italic font-extrabold text-[10px] tracking-wide uppercase bg-slate-100 dark:bg-slate-900 px-2 py-0.5 rounded-md border border-slate-200 dark:border-slate-800">
                   Live
                 </span>
               </h1>
@@ -434,7 +434,7 @@ export default function App() {
                   playSound("click", settings.soundVolume);
                   setShowSettings(true);
                 }}
-                className="rounded-xl border border-slate-800 bg-slate-900/60 p-2.5 text-slate-300 hover:text-white hover:bg-slate-800/80 transition-all hover:scale-[1.05] active:scale-[0.95]"
+                className="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900/60 p-2.5 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800/80 transition-all hover:scale-[1.05] active:scale-[0.95] shadow-xs"
                 title="Preferences"
               >
                 <Sliders className="h-4.5 w-4.5" />
@@ -443,11 +443,11 @@ export default function App() {
 
             {/* Guest Badge */}
             {user && (
-              <div className="flex items-center gap-2 bg-slate-900/80 border border-slate-800 p-1.5 rounded-xl">
-                <div className="flex items-center gap-2 px-2.5 py-1 text-xs font-semibold text-slate-350">
+              <div className="flex items-center gap-2 bg-white dark:bg-slate-900/80 border border-slate-200 dark:border-slate-800 p-1.5 rounded-xl shadow-xs">
+                <div className="flex items-center gap-2 px-2.5 py-1 text-xs font-semibold text-slate-600 dark:text-slate-350">
                   <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
                   <span>{user.username}</span>
-                  <span className="text-[10px] text-blue-400 border border-blue-500/20 px-1.5 py-0.5 rounded bg-blue-500/5">
+                  <span className="text-[10px] text-blue-500 dark:text-blue-400 border border-blue-200 dark:border-blue-500/20 px-1.5 py-0.5 rounded bg-blue-50 dark:bg-blue-500/5">
                     Elo: {user.rating}
                   </span>
                 </div>
@@ -662,7 +662,7 @@ export default function App() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.1, duration: 0.5 }}
-                    className="text-4xl sm:text-6xl font-black tracking-tight leading-none text-white font-sans uppercase italic"
+                    className="text-4xl sm:text-6xl font-black tracking-tight leading-none text-slate-900 dark:text-white font-sans uppercase italic"
                   >
                     Tic-Tac-Toe <br />
                     <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 via-indigo-400 to-purple-400 not-italic font-black">
@@ -674,7 +674,7 @@ export default function App() {
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-md mx-auto"
+                    className="text-slate-600 dark:text-slate-400 text-xs sm:text-sm leading-relaxed max-w-md mx-auto"
                   >
                     Experience real-time offline training against our recursive Minimax bot, pass-and-play matches, and dynamic 10-minute self-deleting WebSocket rooms.
                   </motion.p>
@@ -706,11 +706,11 @@ export default function App() {
 
             {activeView === "menu" && (
               <div className="space-y-8 max-w-4xl mx-auto">
-                <div className="pb-3 border-b border-slate-900">
-                  <h2 className="text-xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                <div className="pb-3 border-b border-slate-200 dark:border-slate-900">
+                  <h2 className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
                     Lobby Menu
                   </h2>
-                  <p className="text-xs text-slate-450 mt-1">Select a game mode to start playing immediately. Zero auth required.</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-450 mt-1">Select a game mode to start playing immediately. Zero auth required.</p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
@@ -719,16 +719,16 @@ export default function App() {
                   <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5">
                     
                     {/* Bot Mode Card */}
-                    <div className="group rounded-2xl bg-slate-900/60 p-6 border border-slate-850 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between">
+                    <div className="group rounded-2xl bg-white dark:bg-slate-900/60 p-6 border border-slate-200 dark:border-slate-850 hover:border-blue-500/60 hover:shadow-lg hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
                       <div>
                         <div className="bg-blue-500/10 h-11 w-11 rounded-xl flex items-center justify-center text-blue-400 mb-4 border border-blue-500/20">
                           <Monitor className="h-5 w-5" />
                         </div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-bold text-white group-hover:text-blue-400 transition-colors">Practice VS Bot</h3>
+                          <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-blue-400 transition-colors">Practice VS Bot</h3>
                           <span className="text-[10px] bg-blue-500/10 text-blue-400 font-bold px-2 py-0.5 rounded-full">AI</span>
                         </div>
-                        <p className="text-[11px] leading-relaxed text-slate-400 mt-2">
+                        <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400 mt-2">
                            Train offline against Easy, Medium heuristics, or an unbeatable recursive Minimax Hard bot.
                         </p>
                       </div>
@@ -737,7 +737,7 @@ export default function App() {
                           playSound("click", settings.soundVolume);
                           setShowDifficultyModal(true);
                         }}
-                        className="mt-6 w-full rounded-xl bg-slate-950 py-3 text-xs font-bold text-blue-400 border border-slate-850 hover:bg-blue-600 hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] duration-150 flex items-center justify-center gap-1.5"
+                        className="mt-6 w-full rounded-xl bg-slate-100 dark:bg-slate-950 py-3 text-xs font-bold text-blue-500 dark:text-blue-400 border border-slate-200 dark:border-slate-850 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] duration-150 flex items-center justify-center gap-1.5 shadow-sm"
                       >
                         Start Practicing
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -745,16 +745,16 @@ export default function App() {
                     </div>
 
                     {/* Local Mode Card */}
-                    <div className="group rounded-2xl bg-slate-900/60 p-6 border border-slate-850 hover:border-rose-500/60 hover:shadow-lg hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between">
+                    <div className="group rounded-2xl bg-white dark:bg-slate-900/60 p-6 border border-slate-200 dark:border-slate-850 hover:border-rose-500/60 hover:shadow-lg hover:shadow-rose-500/5 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between shadow-xs">
                       <div>
                         <div className="bg-rose-500/10 h-11 w-11 rounded-xl flex items-center justify-center text-rose-400 mb-4 border border-rose-500/20">
                           <Users className="h-5 w-5" />
                         </div>
                         <div className="flex items-center gap-2">
-                          <h3 className="text-sm font-bold text-white group-hover:text-rose-400 transition-colors">Play Local</h3>
+                          <h3 className="text-sm font-bold text-slate-900 dark:text-white group-hover:text-rose-400 transition-colors">Play Local</h3>
                           <span className="text-[10px] bg-rose-500/10 text-rose-400 font-bold px-2 py-0.5 rounded-full">Pass & Play</span>
                         </div>
-                        <p className="text-[11px] leading-relaxed text-slate-400 mt-2">
+                        <p className="text-[11px] leading-relaxed text-slate-600 dark:text-slate-400 mt-2">
                           Pass and play with a friend on the same screen. Full score history keeps tabs on winner ratios.
                         </p>
                       </div>
@@ -763,7 +763,7 @@ export default function App() {
                           playSound("click", settings.soundVolume);
                           setActiveGameMode("local");
                         }}
-                        className="mt-6 w-full rounded-xl bg-slate-950 py-3 text-xs font-bold text-rose-400 border border-slate-850 hover:bg-rose-500 hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] duration-155 flex items-center justify-center gap-1.5"
+                        className="mt-6 w-full rounded-xl bg-slate-100 dark:bg-slate-950 py-3 text-xs font-bold text-rose-500 dark:text-rose-400 border border-slate-200 dark:border-slate-850 hover:bg-rose-500 hover:text-white dark:hover:bg-rose-500 dark:hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] duration-155 flex items-center justify-center gap-1.5 shadow-sm"
                       >
                         Launch Match
                         <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
@@ -773,7 +773,7 @@ export default function App() {
 
                   {/* Private Rooms hosting card */}
                   <div className="lg:col-span-5 space-y-6">
-                    <div className="rounded-2xl bg-slate-900/60 p-6 border border-slate-850 shadow-sm">
+                    <div className="rounded-2xl bg-white dark:bg-slate-900/60 p-6 border border-slate-200 dark:border-slate-850 shadow-sm">
                       <h4 className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-4 flex items-center gap-1.5">
                         <span className="h-1.5 w-1.5 rounded-full bg-blue-500"></span>
                         10-Min Online Room
@@ -782,16 +782,16 @@ export default function App() {
                       <div className="space-y-4">
                         <button
                           onClick={createPrivateRoom}
-                          className="w-full text-center rounded-xl bg-slate-950 py-3 text-xs font-bold text-white border border-slate-850 hover:bg-slate-900 hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 flex items-center justify-center gap-1.5"
+                          className="w-full text-center rounded-xl bg-slate-100 dark:bg-slate-950 py-3 text-xs font-bold text-slate-700 dark:text-white border border-slate-200 dark:border-slate-850 hover:bg-slate-200 dark:hover:bg-slate-900 hover:scale-[1.02] active:scale-[0.98] transition-all duration-150 flex items-center justify-center gap-1.5"
                         >
-                          <Plus className="h-4 w-4 text-blue-400" />
+                          <Plus className="h-4 w-4 text-blue-500 dark:text-blue-400" />
                           Host New Room
                         </button>
 
                         <div className="relative flex items-center my-3">
-                          <div className="flex-grow border-t border-slate-850"></div>
+                          <div className="flex-grow border-t border-slate-200 dark:border-slate-850"></div>
                           <span className="flex-shrink mx-3 text-[9px] uppercase font-black text-slate-500 tracking-wider">Or Enter Code</span>
-                          <div className="flex-grow border-t border-slate-850"></div>
+                          <div className="flex-grow border-t border-slate-200 dark:border-slate-850"></div>
                         </div>
 
                         <div className="flex gap-2">
@@ -801,7 +801,7 @@ export default function App() {
                             placeholder="6-letter code"
                             value={joiningCode}
                             onChange={(e) => setJoiningCode(e.target.value.toUpperCase())}
-                            className="flex-1 rounded-xl border border-slate-800 bg-slate-950 px-3 py-2.5 text-xs text-center font-mono tracking-wider font-bold text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="flex-1 rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 px-3 py-2.5 text-xs text-center font-mono tracking-wider font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-1 focus:ring-blue-500"
                           />
                           <button
                             onClick={joinPrivateRoomWithEnteredCode}
