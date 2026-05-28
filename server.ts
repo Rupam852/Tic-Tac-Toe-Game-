@@ -220,17 +220,27 @@ async function startServer() {
             if (!joiner) return;
 
             const { code } = payload;
+            const formattedCode = code.trim().toUpperCase();
             let targetRoom: GameRoom | null = null;
+            let codeExistsAtAll = false;
             
             for (const [_, room] of activeRooms.entries()) {
-              if (room.code === code.trim().toUpperCase() && room.state.status === "waiting") {
-                targetRoom = room;
-                break;
+              if (room.code === formattedCode) {
+                codeExistsAtAll = true;
+                if (room.state.status === "waiting") {
+                  targetRoom = room;
+                  break;
+                }
               }
             }
 
+            if (!codeExistsAtAll) {
+              sendJson({ type: "error", payload: { message: "This room code is invalid or has expired!" } });
+              return;
+            }
+
             if (!targetRoom) {
-              sendJson({ type: "error", payload: { message: "Invalid code or room already full!" } });
+              sendJson({ type: "error", payload: { message: "This room is already full!" } });
               return;
             }
 
