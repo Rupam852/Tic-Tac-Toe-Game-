@@ -413,9 +413,11 @@ export default function App() {
             }}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="bg-blue-600 flex h-9 w-9 items-center justify-center rounded-xl font-black text-white shadow-lg shadow-blue-500/20 group-hover:scale-105 active:scale-95 transition-transform duration-150">
-              X
-            </div>
+            <img
+              src="/logo.png"
+              alt="Logo"
+              className="h-9 w-9 rounded-xl object-cover shadow-lg shadow-blue-500/10 group-hover:scale-105 active:scale-95 transition-transform duration-150 border border-slate-200 dark:border-slate-800"
+            />
             <div>
               <h1 className="text-base font-black tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5 leading-none italic select-none">
                 Tic-Tac-Toe
