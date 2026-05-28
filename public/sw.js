@@ -7,8 +7,7 @@ const ASSETS_TO_CACHE = [
   "/logo.png",
   "/icon-192.png",
   "/icon-512.png",
-  "/icon-maskable.png",
-  "/icon-512-monochrome.png"
+  "/icon-maskable.png"
 ];
 
 // Install Service Worker and cache core static assets

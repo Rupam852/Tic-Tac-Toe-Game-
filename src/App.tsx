@@ -20,7 +20,8 @@ import {
   ArrowRight,
   Sparkles,
   Share2,
-  Copy
+  Copy,
+  Download
 } from "lucide-react";
 import { User, UserSettings, GameRoom } from "./types";
 import { playSound } from "./utils/audio";
@@ -48,6 +49,15 @@ export default function App() {
 
   // Anonymous Guest Profile State
   const [user, setUser] = useState<User | null>(null);
+
+  // Platform State: Detect if running inside a native mobile wrapper
+  const [isNative, setIsNative] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && ((window as any).Capacitor || window.location.protocol === "file:")) {
+      setIsNative(true);
+    }
+  }, []);
 
   // App Preference Settings
   const [settings, setSettings] = useState<UserSettings>({
@@ -821,6 +831,29 @@ export default function App() {
                     </span>
                   </button>
                 </motion.div>
+
+                {/* Android App Sideload Sourced Download Banner (Website Only) */}
+                {!isNative && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.5 }}
+                    className="w-full flex flex-col items-center gap-3 pt-6 border-t border-slate-200/5 mt-4"
+                  >
+                    <span className="text-[11px] font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
+                      Play this game in mobile app
+                    </span>
+                    <a
+                      href="https://drive.google.com/file/d/1LrohWAKAXzV3FEQ6YdeHi_7qZmP8F_WB/view?usp=sharing"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900/60 dark:hover:bg-slate-900 dark:border dark:border-slate-800 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 shadow-md shadow-blue-500/5 cursor-pointer"
+                    >
+                      <Download className="h-4 w-4 text-blue-500 dark:text-blue-400 group-hover:translate-y-0.5 transition-transform" />
+                      Android App
+                    </a>
+                  </motion.div>
+                )}
               </div>
             )}
 
