@@ -1,7 +1,7 @@
 {
   "id": "com.tictactoe.live",
-  "name": "Tic-Tac-Toe Live",
-  "short_name": "TicTacToe",
+  "name": "Tic Tac Toe",
+  "short_name": "Tic Tac Toe",
   "description": "Premium online multiplayer and offline practice Tic-Tac-Toe arena with zero login barriers.",
   "start_url": "/",
   "display": "standalone",

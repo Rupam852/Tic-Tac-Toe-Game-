@@ -110,6 +110,95 @@ export default function App() {
     sessionStorage.setItem("bot_difficulty", difficulty);
   }, [difficulty]);
 
+  // Synchronize history states for standard back button & popstate navigation
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      // Prevent browser default back logic so we can intercept it
+      event.preventDefault();
+      
+      if (activeGameMode !== null) {
+        // If in an active game match, exit the game back to the lobby
+        if (activeGameMode === "online" && onlineRoom) {
+          if (socket && socket.readyState === WebSocket.OPEN) {
+            socket.send(JSON.stringify({
+              type: "leave_room",
+              payload: { roomId: onlineRoom.roomId }
+            }));
+          }
+        }
+        setOnlineRoom(null);
+        setActiveGameMode(null);
+        window.history.pushState({ state: "menu" }, "");
+      } else if (activeView === "menu") {
+        // If in menu selection, go back to central landing
+        setActiveView("landing");
+        window.history.pushState({ state: "landing" }, "");
+      } else {
+        // If on landing page, allow browser navigation to escape
+        window.history.go(-1);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [activeView, activeGameMode, onlineRoom, socket]);
+
+  // Synchronize native Android / Capacitor back button gestures
+  useEffect(() => {
+    let appBackButtonListener: any;
+    
+    const setupNativeBack = async () => {
+      try {
+        const { App: CapApp } = await import("@capacitor/app");
+        appBackButtonListener = await CapApp.addListener("backButton", () => {
+          if (activeGameMode !== null) {
+            // Exit match back to lobby
+            playSound("click", settings.soundVolume);
+            if (activeGameMode === "online" && onlineRoom) {
+              if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({
+                  type: "leave_room",
+                  payload: { roomId: onlineRoom.roomId }
+                }));
+              }
+            }
+            setOnlineRoom(null);
+            setActiveGameMode(null);
+          } else if (activeView === "menu") {
+            // Go back to landing page
+            playSound("click", settings.soundVolume);
+            setActiveView("landing");
+          } else {
+            // Minimize or exit the application
+            CapApp.exitApp();
+          }
+        });
+      } catch (err) {
+        console.log("Capacitor App plugin not loaded - fallback to popstate engine", err);
+      }
+    };
+    
+    setupNativeBack();
+    
+    return () => {
+      if (appBackButtonListener) {
+        appBackButtonListener.remove();
+      }
+    };
+  }, [activeView, activeGameMode, onlineRoom, socket, settings.soundVolume]);
+
+  // Sync navigation pushStates for history stack sizing
+  useEffect(() => {
+    if (activeView === "landing") {
+      window.history.pushState({ state: "landing" }, "");
+    } else if (activeView === "menu" && activeGameMode === null) {
+      window.history.pushState({ state: "menu" }, "");
+    } else if (activeGameMode !== null) {
+      window.history.pushState({ state: "game" }, "");
+    }
+  }, [activeView, activeGameMode]);
+
+
   // Load Saved Preferences and Initialize Guest Profile on Mount
   useEffect(() => {
     const savedPrefs = localStorage.getItem("game_prefs");
