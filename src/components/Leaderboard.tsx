@@ -10,11 +10,12 @@ import { LeaderboardEntry, MatchHistoryItem } from "../types";
 import { playSound } from "../utils/audio";
 
 interface LeaderboardProps {
+  backendUrl?: string;
   currentUserId?: string;
   soundVolume: number;
 }
 
-export default function Leaderboard({ currentUserId, soundVolume }: LeaderboardProps) {
+export default function Leaderboard({ backendUrl = "", currentUserId, soundVolume }: LeaderboardProps) {
   const [boardData, setBoardData] = useState<LeaderboardEntry[]>([]);
   const [matchHistory, setMatchHistory] = useState<MatchHistoryItem[]>([]);
   const [activeTab, setActiveTab] = useState<"ranks" | "history">("ranks");
@@ -26,13 +27,13 @@ export default function Leaderboard({ currentUserId, soundVolume }: LeaderboardP
     // Fetch data from restful routes
     const fetchStats = async () => {
       try {
-        const resL = await fetch("/api/leaderboard");
+        const resL = await fetch(`${backendUrl}/api/leaderboard`);
         if (resL.ok) {
           const datL = await resL.json();
           setBoardData(datL);
         }
 
-        const resH = await fetch("/api/history");
+        const resH = await fetch(`${backendUrl}/api/history`);
         if (resH.ok) {
           const datH = await resH.json();
           setMatchHistory(datH);

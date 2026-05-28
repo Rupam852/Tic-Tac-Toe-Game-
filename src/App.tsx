@@ -113,10 +113,9 @@ export default function App() {
 
   // Sync / Establish connection with global WebSocket Server
   useEffect(() => {
-    // Determine target socket route
-    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host;
-    const socketUrl = `${protocol}//${host}/ws`;
+    // Use environment variable VITE_BACKEND_URL in production, fallback to relative local path
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || window.location.origin;
+    const socketUrl = backendUrl.replace(/^http/, "ws") + "/ws";
 
     let ws: WebSocket;
 
@@ -277,7 +276,8 @@ export default function App() {
     if (!user) return;
 
     try {
-      const res = await fetch("/api/auth/toggle-2fa", {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "";
+      const res = await fetch(`${backendUrl}/api/auth/toggle-2fa`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ uid: user.uid, enabled: targetState }),
@@ -1124,7 +1124,11 @@ export default function App() {
             )}
 
             {activeView === "leaderboard" && (
-              <Leaderboard currentUserId={user?.uid} soundVolume={settings.soundVolume} />
+              <Leaderboard 
+                backendUrl={import.meta.env.VITE_BACKEND_URL || ""} 
+                currentUserId={user?.uid} 
+                soundVolume={settings.soundVolume} 
+              />
             )}
 
             {activeView === "profile" && user && (
@@ -1182,6 +1186,7 @@ export default function App() {
       <AnimatePresence>
         {showAuthScreen && (
           <AuthScreen
+            backendUrl={import.meta.env.VITE_BACKEND_URL || ""}
             onAuthSuccess={handleAuthSuccess}
             soundVolume={settings.soundVolume}
             onClose={() => setShowAuthScreen(false)}

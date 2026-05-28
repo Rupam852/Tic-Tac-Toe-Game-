@@ -10,13 +10,14 @@ import { User as UserType } from "../types";
 import { playSound } from "../utils/audio";
 
 interface AuthScreenProps {
+  backendUrl?: string;
   onAuthSuccess: (user: UserType) => void;
   soundVolume: number;
   onClose: () => void;
   initialTab?: "login" | "register";
 }
 
-export default function AuthScreen({ onAuthSuccess, soundVolume, onClose, initialTab }: AuthScreenProps) {
+export default function AuthScreen({ backendUrl = "", onAuthSuccess, soundVolume, onClose, initialTab }: AuthScreenProps) {
   const [activeTab, setActiveTab] = useState<"login" | "register">(initialTab || "login");
   
   // Login Form
@@ -64,7 +65,7 @@ export default function AuthScreen({ onAuthSuccess, soundVolume, onClose, initia
 
     try {
       const redirectUri = `${window.location.origin}/auth/google/callback`;
-      const response = await fetch(`/api/auth/google/url?redirect_uri=${encodeURIComponent(redirectUri)}`);
+      const response = await fetch(`${backendUrl}/api/auth/google/url?redirect_uri=${encodeURIComponent(redirectUri)}`);
       if (!response.ok) {
         throw new Error("Unable to obtain Google Auth parameters");
       }
@@ -103,7 +104,7 @@ export default function AuthScreen({ onAuthSuccess, soundVolume, onClose, initia
         payload.otpCode = otpValue; // send OTP along if required
       }
 
-      const res = await fetch("/api/auth/login", {
+      const res = await fetch(`${backendUrl}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -153,7 +154,7 @@ export default function AuthScreen({ onAuthSuccess, soundVolume, onClose, initia
 
     setLoading(true);
     try {
-      const res = await fetch("/api/auth/register", {
+      const res = await fetch(`${backendUrl}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
