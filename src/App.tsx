@@ -616,6 +616,14 @@ export default function App() {
             onSendChat={sendChatBubble}
             onExit={() => {
               playSound("click", settings.soundVolume);
+              if (activeGameMode === "online" && onlineRoom) {
+                if (socket && socket.readyState === WebSocket.OPEN) {
+                  socket.send(JSON.stringify({
+                    type: "leave_room",
+                    payload: { roomId: onlineRoom.roomId }
+                  }));
+                }
+              }
               setOnlineRoom(null);
               setActiveGameMode(null);
             }}

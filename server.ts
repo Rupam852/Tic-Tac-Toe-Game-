@@ -422,6 +422,36 @@ async function startServer() {
             break;
           }
 
+          // Leave Custom Play Room
+          case "leave_room": {
+            const { roomId } = payload;
+            const room = activeRooms.get(roomId);
+            if (!room) return;
+
+            // Notify opposite player
+            const notifyUid = room.state.playerX.uid === currentUserId ? (room.state.playerO?.uid) : room.state.playerX.uid;
+            if (notifyUid) {
+              const oppSocket = activeSockets.get(notifyUid);
+              if (oppSocket) {
+                oppSocket.socket.send(JSON.stringify({
+                  type: "opponent_disconnected",
+                  payload: { message: "Opponent left the match." }
+                }));
+              }
+            }
+
+            // Clear auto-expiry timer
+            const timer = roomTimers.get(roomId);
+            if (timer) {
+              clearTimeout(timer);
+              roomTimers.delete(roomId);
+            }
+
+            activeRooms.delete(roomId);
+            console.log(`[Room Terminated] Room ${roomId} explicitly closed by user.`);
+            break;
+          }
+
           // Real-time emoji burst or quick text chatting
           case "chat_bubble": {
             const { roomId, content } = payload;
