@@ -29,7 +29,9 @@ import GameArea from "./components/GameArea";
 
 export default function App() {
   // Navigation & Mode States
-  const [activeView, setActiveView] = useState<"landing" | "menu">("landing");
+  const [activeView, setActiveView] = useState<"landing" | "menu">(
+    () => (sessionStorage.getItem("active_view") as "landing" | "menu") || "landing"
+  );
   const [activeGameMode, setActiveGameMode] = useState<"single" | "local" | "online" | null>(null);
 
   // Bot Difficulty Settings
@@ -80,6 +82,11 @@ export default function App() {
     }
     localStorage.setItem("game_prefs", JSON.stringify(settings));
   }, [settings]);
+
+  // Sync activeView to sessionStorage
+  useEffect(() => {
+    sessionStorage.setItem("active_view", activeView);
+  }, [activeView]);
 
   // Load Saved Preferences and Initialize Guest Profile on Mount
   useEffect(() => {
