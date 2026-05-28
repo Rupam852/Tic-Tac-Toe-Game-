@@ -486,8 +486,10 @@ export default function GameArea({
             <div className="flex flex-col items-center px-3 shrink-0 z-10">
               <span className="text-[9px] font-black text-slate-500 uppercase tracking-widest">VS</span>
               {mode === "online" ? (
-                <div className="flex items-center gap-1 bg-slate-950 px-2 py-0.5 rounded-full border border-slate-850 text-[10px] font-bold text-slate-300 mt-1">
-                  <span>Score</span>
+                <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-805 text-[11px] font-black font-mono text-slate-350 mt-1" title={`Draws: ${onlineRoom?.state.draws || 0}`}>
+                  <span>{onlineRoom?.state.scoreX || 0}</span>
+                  <span className="text-slate-650">:</span>
+                  <span>{onlineRoom?.state.scoreO || 0}</span>
                 </div>
               ) : (
                 <div className="flex items-center gap-1 bg-slate-950 px-2.5 py-0.5 rounded-full border border-slate-800 text-[11px] font-black font-mono text-slate-350 mt-1">

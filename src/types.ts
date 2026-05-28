@@ -30,6 +30,9 @@ export interface GameState {
   playerO: { uid: string; username: string; rating: number } | null;
   mode: "single" | "local" | "online";
   rematchRequestedBy?: string | null; // User UID
+  scoreX?: number;
+  scoreO?: number;
+  draws?: number;
 }
 
 export interface GameRoom {

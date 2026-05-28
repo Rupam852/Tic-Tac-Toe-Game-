@@ -170,7 +170,10 @@ async function startServer() {
               status: "waiting", // Waiting for opponent to join
               playerX: { uid: creator.user.uid, username: creator.user.username, rating: creator.user.rating || 1200 },
               playerO: null,
-              mode: "online"
+              mode: "online",
+              scoreX: 0,
+              scoreO: 0,
+              draws: 0
             };
 
             const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
@@ -310,8 +313,14 @@ async function startServer() {
               
               if (outcome.winner === "draw") {
                 state.winner = "draw";
+                state.draws = (state.draws || 0) + 1;
               } else {
                 state.winner = outcome.winner === "X" ? state.playerX.uid : state.playerO!.uid;
+                if (outcome.winner === "X") {
+                  state.scoreX = (state.scoreX || 0) + 1;
+                } else {
+                  state.scoreO = (state.scoreO || 0) + 1;
+                }
               }
 
               // Update rating Elo values and stats in-memory
