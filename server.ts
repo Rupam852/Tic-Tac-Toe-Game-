@@ -79,6 +79,11 @@ async function startServer() {
     next();
   });
 
+  // Simple Ping Endpoint for Cron Jobs/Keep-Alive monitors to prevent Render sleep spin-down
+  app.get("/ping", (req, res) => {
+    res.status(200).json({ status: "alive", timestamp: Date.now() });
+  });
+
 
 
   // Handle WebSocket Connection
