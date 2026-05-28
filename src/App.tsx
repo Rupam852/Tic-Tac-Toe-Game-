@@ -271,7 +271,7 @@ export default function App() {
       if (ws) ws.close();
       if (socketReconnectTimer.current) clearTimeout(socketReconnectTimer.current);
     };
-  }, [user]);
+  }, [user?.uid]);
 
   // Private room creations
   const createPrivateRoom = () => {
