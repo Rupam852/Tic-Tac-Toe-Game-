@@ -93,6 +93,20 @@ async function startServer() {
     }
   });
 
+  const broadcastLobbyInfo = () => {
+    const payload = JSON.stringify({
+      type: "lobby_info",
+      payload: {
+        onlineCount: activeSockets.size,
+      }
+    });
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(payload);
+      }
+    });
+  };
+
   wss.on("connection", (ws: WebSocket) => {
     console.log("[WS Connection] A new client has connected to the WebSocket server");
     let currentUserId: string | null = null;
@@ -133,13 +147,8 @@ async function startServer() {
             // Map socket
             activeSockets.set(currentUserId, { socket: ws, user });
 
-            // Push state of online lobby count
-            sendJson({
-              type: "lobby_info",
-              payload: {
-                onlineCount: activeSockets.size,
-              }
-            });
+            // Push updated state of online lobby count to all clients in real-time
+            broadcastLobbyInfo();
 
             break;
           }
@@ -465,6 +474,9 @@ async function startServer() {
             activeRooms.delete(roomId);
           }
         }
+        
+        // Push updated state of online lobby count to all clients in real-time
+        broadcastLobbyInfo();
       }
     });
   });
