@@ -538,15 +538,22 @@ export default function App() {
   const handleShareInvite = async () => {
     playSound("click", settings.soundVolume);
     if (!onlineRoom) return;
-    const inviteUrl = `${window.location.origin}?room=${onlineRoom.code}`;
-    const inviteText = `Play Tic-Tac-Toe Live with me! 🎮\n\nRoom Code: ${onlineRoom.code}\nJoin instantly here: ${inviteUrl}`;
+
+    const baseUrl = (typeof window !== "undefined" && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1")
+      ? window.location.origin
+      : "https://tic-tac-toe-game-wtl2.onrender.com";
+
+    const webUrl = `${baseUrl}?room=${onlineRoom.code}`;
+    const appUrl = `tictactoe://room/${onlineRoom.code}`;
+    
+    const inviteText = `Play Tic-Tac-Toe Live with me! 🎮\n\nRoom Code: ${onlineRoom.code}\n\n👉 Open in Android App: ${appUrl}\n👉 Open in Web Browser: ${webUrl}`;
     
     if (navigator.share) {
       try {
         await navigator.share({
           title: "Tic-Tac-Toe Live Match Invite",
           text: inviteText,
-          url: inviteUrl
+          url: webUrl
         });
         addToast("Invitation shared successfully!", "success");
       } catch (err) {
