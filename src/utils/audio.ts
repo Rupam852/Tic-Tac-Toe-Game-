@@ -33,7 +33,7 @@ export function playSound(type: "click" | "place" | "win" | "draw" | "error" | "
         osc.type = "sine";
         osc.frequency.setValueAtTime(440, now);
         osc.frequency.exponentialRampToValueAtTime(880, now + 0.05);
-        gain.gain.setValueAtTime(volume * 0.1, now);
+        gain.gain.setValueAtTime(volume * 0.3, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
         osc.start(now);
         osc.stop(now + 0.05);
@@ -43,7 +43,7 @@ export function playSound(type: "click" | "place" | "win" | "draw" | "error" | "
         osc.type = "triangle";
         osc.frequency.setValueAtTime(330, now);
         osc.frequency.exponentialRampToValueAtTime(150, now + 0.12);
-        gain.gain.setValueAtTime(volume * 0.3, now);
+        gain.gain.setValueAtTime(volume * 0.7, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
         osc.start(now);
         osc.stop(now + 0.12);
@@ -56,8 +56,8 @@ export function playSound(type: "click" | "place" | "win" | "draw" | "error" | "
         osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
         osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
         osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
-        gain.gain.setValueAtTime(volume * 0.2, now);
-        gain.gain.linearRampToValueAtTime(volume * 0.2, now + 0.3);
+        gain.gain.setValueAtTime(volume * 0.6, now);
+        gain.gain.linearRampToValueAtTime(volume * 0.6, now + 0.3);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
         osc.start(now);
         osc.stop(now + 0.6);
@@ -67,7 +67,7 @@ export function playSound(type: "click" | "place" | "win" | "draw" | "error" | "
         osc.type = "sine";
         osc.frequency.setValueAtTime(220, now);
         osc.frequency.setValueAtTime(200, now + 0.15);
-        gain.gain.setValueAtTime(volume * 0.2, now);
+        gain.gain.setValueAtTime(volume * 0.6, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
         osc.start(now);
         osc.stop(now + 0.4);
@@ -77,7 +77,7 @@ export function playSound(type: "click" | "place" | "win" | "draw" | "error" | "
         osc.type = "sawtooth";
         osc.frequency.setValueAtTime(120, now);
         osc.frequency.linearRampToValueAtTime(80, now + 0.2);
-        gain.gain.setValueAtTime(volume * 0.2, now);
+        gain.gain.setValueAtTime(volume * 0.6, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
         osc.start(now);
         osc.stop(now + 0.2);
@@ -88,7 +88,7 @@ export function playSound(type: "click" | "place" | "win" | "draw" | "error" | "
         osc.frequency.setValueAtTime(587.33, now); // D5
         osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
         osc.frequency.exponentialRampToValueAtTime(1174.66, now + 0.2);
-        gain.gain.setValueAtTime(volume * 0.2, now);
+        gain.gain.setValueAtTime(volume * 0.6, now);
         gain.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
         osc.start(now);
         osc.stop(now + 0.3);
