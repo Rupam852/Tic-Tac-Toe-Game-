@@ -112,8 +112,25 @@ async function startServer() {
     });
   };
 
-  wss.on("connection", (ws: WebSocket) => {
+  // Stale connection cleanup: Ping all connected WebSocket clients every 10 seconds to flush inactive apps
+  const heartbeatInterval = setInterval(() => {
+    wss.clients.forEach((ws: any) => {
+      if (ws.isAlive === false) {
+        console.log("[Heartbeat] Terminating inactive/closed client connection");
+        return ws.terminate();
+      }
+      ws.isAlive = false;
+      ws.ping();
+    });
+  }, 10000);
+
+  wss.on("connection", (ws: any) => {
     console.log("[WS Connection] A new client has connected to the WebSocket server");
+    ws.isAlive = true;
+    ws.on("pong", () => {
+      ws.isAlive = true;
+    });
+
     let currentUserId: string | null = null;
     let currentRoomId: string | null = null;
 
@@ -568,6 +585,10 @@ async function startServer() {
   // Bind to port 3000
   server.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running at http://localhost:${PORT}`);
+  });
+
+  server.on("close", () => {
+    clearInterval(heartbeatInterval);
   });
 }
 
