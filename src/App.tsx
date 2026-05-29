@@ -213,39 +213,51 @@ export default function App() {
   useEffect(() => {
     let appUrlListener: any;
 
+    const handleIncomingDeepLinkUrl = (url: string) => {
+      let roomCode: string | null = null;
+
+      try {
+        const parsedUrl = new URL(url);
+        if (parsedUrl.searchParams.has("room")) {
+          roomCode = parsedUrl.searchParams.get("room");
+        } else {
+          const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
+          if (pathParts.length > 0) {
+            roomCode = pathParts[pathParts.length - 1];
+          } else if (parsedUrl.host && parsedUrl.host !== "localhost") {
+            roomCode = parsedUrl.host;
+          }
+        }
+      } catch (e) {
+        const match = url.match(/[?&]room=([^&]+)/) || url.match(/tictactoe:\/\/(?:room\/)?([A-Z0-9]{6})/i);
+        if (match) {
+          roomCode = match[1];
+        }
+      }
+
+      if (roomCode) {
+        const cleanCode = roomCode.trim().toUpperCase();
+        console.log(`[Deep Link Auto-Join] Extracted room code: ${cleanCode}`);
+        setDeepLinkRoomCode(cleanCode);
+      }
+    };
+
     const setupDeepLinks = async () => {
       try {
         const { App: CapApp } = await import("@capacitor/app");
+        
+        // 1. Handle deep link clicked while app is already running/backgrounded
         appUrlListener = await CapApp.addListener("appUrlOpen", (data: any) => {
           console.log("[Deep Link] App opened with URL:", data.url);
-
-          let roomCode: string | null = null;
-
-          try {
-            const parsedUrl = new URL(data.url);
-            if (parsedUrl.searchParams.has("room")) {
-              roomCode = parsedUrl.searchParams.get("room");
-            } else {
-              const pathParts = parsedUrl.pathname.split("/").filter(Boolean);
-              if (pathParts.length > 0) {
-                roomCode = pathParts[pathParts.length - 1];
-              } else if (parsedUrl.host && parsedUrl.host !== "localhost") {
-                roomCode = parsedUrl.host;
-              }
-            }
-          } catch (e) {
-            const match = data.url.match(/[?&]room=([^&]+)/) || data.url.match(/tictactoe:\/\/(?:room\/)?([A-Z0-9]{6})/i);
-            if (match) {
-              roomCode = match[1];
-            }
-          }
-
-          if (roomCode) {
-            const cleanCode = roomCode.trim().toUpperCase();
-            console.log(`[Deep Link Auto-Join] Extracted room code: ${cleanCode}`);
-            setDeepLinkRoomCode(cleanCode);
-          }
+          handleIncomingDeepLinkUrl(data.url);
         });
+
+        // 2. Handle deep link that launched the app from a completely closed state
+        const launchData = await CapApp.getLaunchUrl();
+        if (launchData && launchData.url) {
+          console.log("[Deep Link] App launched with URL:", launchData.url);
+          handleIncomingDeepLinkUrl(launchData.url);
+        }
       } catch (err) {
         console.log("Capacitor App plugin not available for deep linking in browser", err);
       }
