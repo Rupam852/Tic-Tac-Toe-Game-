@@ -1,66 +1,34 @@
-const CACHE_NAME = "tictactoe-v1";
-const ASSETS_TO_CACHE = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/favicon.png",
-  "/logo.png",
-  "/icon-192.png",
-  "/icon-512.png",
-  "/icon-maskable.png"
-];
+/**
+ * @license
+ * SPDX-License-Identifier: Apache-2.0
+ */
 
-// Install Service Worker and cache core static assets
+// Service Worker Purge & Kill-Switch to resolve infinite caching issues in WebViews like Instagram
+const CACHE_NAME = "tictactoe-purge-v2";
+
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log("[Service Worker] Pre-caching offline assets");
-      return cache.addAll(ASSETS_TO_CACHE);
-    }).then(() => self.skipWaiting())
-  );
+  // Force the new service worker to become active immediately
+  self.skipWaiting();
 });
 
-// Activate Service Worker and clean up stale caches
 self.addEventListener("activate", (event) => {
+  // Delete all client-side caches completely
   event.waitUntil(
     caches.keys().then((keys) => {
       return Promise.all(
         keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            console.log("[Service Worker] Removing stale cache:", key);
-            return caches.delete(key);
-          }
+          console.log("[Service Worker] Purging cache:", key);
+          return caches.delete(key);
         })
       );
-    }).then(() => self.clients.claim())
+    }).then(() => {
+      return self.clients.claim();
+    })
   );
 });
 
-// Cache-first strategies for assets, network-first fallback
+// Do not intercept or cache any network requests
 self.addEventListener("fetch", (event) => {
-  // Avoid caching WebSocket upgrades or non-GET requests
-  if (event.request.method !== "GET" || event.request.url.includes("/ws") || event.request.url.includes("/ping")) {
-    return;
-  }
-
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request).then((networkResponse) => {
-        // Cache dynamic assets on the fly if they are valid same-origin assets
-        if (networkResponse && networkResponse.status === 200 && event.request.url.startsWith(self.location.origin)) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      }).catch(() => {
-        // Fallback for offline API/routing failures
-        return caches.match("/");
-      });
-    })
-  );
+  // Let the browser perform standard network fetches
+  return;
 });
