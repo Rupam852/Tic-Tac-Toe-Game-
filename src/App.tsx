@@ -552,8 +552,7 @@ export default function App() {
       try {
         await navigator.share({
           title: "Tic-Tac-Toe Live Match Invite",
-          text: inviteText,
-          url: webUrl
+          text: inviteText
         });
         addToast("Invitation shared successfully!", "success");
       } catch (err) {
