@@ -166,6 +166,11 @@ export default function GameArea({
   const [timeLeft, setTimeLeft] = useState<string>("");
   const [isExpired, setIsExpired] = useState<boolean>(false);
 
+  // Dynamic bot difficulty state
+  const [currentDifficulty, setCurrentDifficulty] = useState<"easy" | "medium" | "hard">(
+    () => difficulty
+  );
+
   // Chat auto-scroll reference and listener
   const chatBottomRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
@@ -237,6 +242,13 @@ export default function GameArea({
     setLocalWinner(null);
     setLocalWinningLine(null);
     clearSessionStorage();
+
+    // Randomize difficulty again for single player rematch
+    if (mode === "single") {
+      const difficulties = ["easy", "medium", "hard"] as const;
+      const randomDiff = difficulties[Math.floor(Math.random() * difficulties.length)];
+      setCurrentDifficulty(randomDiff);
+    }
   };
 
   // Play a move
@@ -305,10 +317,10 @@ export default function GameArea({
       if (availableCells.length === 0) return;
 
       let chosenIndex = -1;
-      if (difficulty === "easy") {
+      if (currentDifficulty === "easy") {
         const randomIdx = Math.floor(Math.random() * availableCells.length);
         chosenIndex = availableCells[randomIdx];
-      } else if (difficulty === "medium") {
+      } else if (currentDifficulty === "medium") {
         chosenIndex = getMediumMove(localBoard);
       } else {
         const best = minimax(localBoard, 0, true);
@@ -342,7 +354,7 @@ export default function GameArea({
     }, 600); // realistic slight response lag for AI
 
     return () => clearTimeout(timer);
-  }, [localTurn, localWinner, mode, localBoard, difficulty]);
+  }, [localTurn, localWinner, mode, localBoard, currentDifficulty]);
 
   // Online Mode outcome transition listener
   const lastOnlineStatusRef = useRef<string | null>(null);
@@ -494,14 +506,14 @@ export default function GameArea({
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
               <span className="hidden sm:inline">
                 {mode === "single" 
-                  ? `Vs Robot (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})` 
+                  ? `Vs Robot (${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)})` 
                   : mode === "local" 
                   ? "Pass & Play" 
                   : "10-Min Room"}
               </span>
               <span className="inline sm:hidden">
                 {mode === "single" 
-                  ? `Bot (${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)})` 
+                  ? `Bot (${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)})` 
                   : mode === "local" 
                   ? "Local" 
                   : "Online"}
@@ -608,7 +620,7 @@ export default function GameArea({
                 {mode === "online" 
                   ? (onlineRoom?.state.playerO?.username || "Connecting...") 
                   : mode === "single" 
-                  ? `AI (${difficulty.toUpperCase()})` 
+                  ? `AI (${currentDifficulty.toUpperCase()})` 
                   : "Local Play"}
               </span>
               {mode === "online" && onlineRoom?.state.playerO && (

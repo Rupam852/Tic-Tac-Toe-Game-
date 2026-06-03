@@ -47,7 +47,6 @@ export default function App() {
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">(
     () => (safeSessionStorage.getItem("bot_difficulty") as "easy" | "medium" | "hard") || "easy"
   );
-  const [showDifficultyModal, setShowDifficultyModal] = useState(false);
 
   // Anonymous Guest Profile State
   const [user, setUser] = useState<User | null>(null);
@@ -832,66 +831,7 @@ export default function App() {
           )}
         </AnimatePresence>
 
-        {/* Difficulty Selector Modal */}
-        <AnimatePresence>
-          {showDifficultyModal && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-4"
-            >
-              <motion.div
-                initial={{ scale: 0.9, y: 20 }}
-                animate={{ scale: 1, y: 0 }}
-                exit={{ scale: 0.9, y: 20 }}
-                className="w-full max-w-sm bg-slate-900 border border-slate-850 rounded-3xl p-6 shadow-2xl relative space-y-6"
-              >
-                <button
-                  onClick={() => setShowDifficultyModal(false)}
-                  className="absolute top-4 right-4 text-slate-450 hover:text-white"
-                >
-                  <X className="h-5 w-5" />
-                </button>
 
-                <div className="text-center space-y-2">
-                  <div className="mx-auto h-12 w-12 bg-blue-500/10 rounded-full flex items-center justify-center text-blue-400 border border-blue-500/20">
-                    <Monitor className="h-5 w-5" />
-                  </div>
-                  <h3 className="text-base font-extrabold text-white">Select Robot Difficulty</h3>
-                  <p className="text-xs text-slate-400">Choose your match challenge below</p>
-                </div>
-
-                <div className="grid grid-cols-1 gap-3.5">
-                  {(["easy", "medium", "hard"] as const).map((diff) => (
-                    <button
-                      key={diff}
-                      onClick={() => {
-                        playSound("click", settings.soundVolume);
-                        setDifficulty(diff);
-                        setShowDifficultyModal(false);
-                        setActiveGameMode("single");
-                      }}
-                      className="group flex items-center justify-between rounded-xl bg-slate-950 border border-slate-850 p-4 hover:border-blue-500/60 hover:bg-slate-900 transition-all duration-150 text-left"
-                    >
-                      <div>
-                        <h4 className="text-xs font-black uppercase tracking-wider text-slate-205 group-hover:text-blue-400">
-                          {diff} Mode
-                        </h4>
-                        <p className="text-[10px] text-slate-450 mt-1">
-                          {diff === "easy" && "Plays purely random, simple moves."}
-                          {diff === "medium" && "Plays smart offensive / defensive blocking moves."}
-                          {diff === "hard" && "Unbeatable. Powered by the Minimax algorithm."}
-                        </p>
-                      </div>
-                      <ArrowRight className="h-4 w-4 text-slate-500 group-hover:translate-x-1 transition-transform" />
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            </motion.div>
-          )}
-        </AnimatePresence>
 
         {activeGameMode ? (
           /* Active Gameplay Area Screen */
@@ -1038,7 +978,10 @@ export default function App() {
                       <button
                         onClick={() => {
                           playSound("click", settings.soundVolume);
-                          setShowDifficultyModal(true);
+                          const difficulties = ["easy", "medium", "hard"] as const;
+                          const randomDiff = difficulties[Math.floor(Math.random() * difficulties.length)];
+                          setDifficulty(randomDiff);
+                          setActiveGameMode("single");
                         }}
                         className="mt-6 w-full rounded-xl bg-slate-100 dark:bg-slate-950 py-3 text-xs font-bold text-blue-500 dark:text-blue-400 border border-slate-200 dark:border-slate-850 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] duration-150 flex items-center justify-center gap-1.5 shadow-sm"
                       >
