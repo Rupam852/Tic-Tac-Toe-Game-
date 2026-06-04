@@ -45,7 +45,7 @@ export default function App() {
 
   // Bot Difficulty Settings
   const [difficulty, setDifficulty] = useState<"easy" | "medium" | "hard">(
-    () => (safeSessionStorage.getItem("bot_difficulty") as "easy" | "medium" | "hard") || "easy"
+    () => (safeSessionStorage.getItem("bot_difficulty") as "easy" | "medium" | "hard") || "medium"
   );
 
   // Anonymous Guest Profile State
@@ -992,10 +992,8 @@ export default function App() {
                        <button
                         onClick={() => {
                           playSound("click", settings.soundVolume);
-                          // Skewed probability: 55% easy, 30% medium, 15% hard
-                          const rand = Math.random();
-                          const selectedDiff = rand < 0.55 ? "easy" : rand < 0.85 ? "medium" : "hard";
-                          setDifficulty(selectedDiff);
+                          // Set difficulty strictly to medium
+                          setDifficulty("medium");
                           setActiveGameMode("single");
                         }}
                         className="mt-6 w-full rounded-xl bg-slate-100 dark:bg-slate-950 py-3 text-xs font-bold text-blue-500 dark:text-blue-400 border border-slate-200 dark:border-slate-850 hover:bg-blue-600 hover:text-white dark:hover:bg-blue-600 dark:hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] duration-150 flex items-center justify-center gap-1.5 shadow-sm"

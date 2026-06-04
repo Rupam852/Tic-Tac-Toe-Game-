@@ -127,7 +127,7 @@ export default function GameArea({
   onSendChat,
   onExit,
   chatMessages,
-  difficulty = "easy",
+  difficulty = "medium",
 }: GameAreaProps) {
   // Local (and Robot) Game State
   const [localBoard, setLocalBoard] = useState<BoardState>(() => {
@@ -168,7 +168,7 @@ export default function GameArea({
 
   // Dynamic bot difficulty state
   const [currentDifficulty, setCurrentDifficulty] = useState<"easy" | "medium" | "hard">(
-    () => difficulty
+    "medium"
   );
 
   // Chat auto-scroll reference and listener
@@ -243,11 +243,9 @@ export default function GameArea({
     setLocalWinningLine(null);
     clearSessionStorage();
 
-    // Randomize difficulty again for single player rematch (55% easy, 30% medium, 15% hard)
+    // Set difficulty to medium for single player rematch
     if (mode === "single") {
-      const rand = Math.random();
-      const randomDiff = rand < 0.55 ? "easy" : rand < 0.85 ? "medium" : "hard";
-      setCurrentDifficulty(randomDiff);
+      setCurrentDifficulty("medium");
     }
   };
 
@@ -321,8 +319,8 @@ export default function GameArea({
         const randomIdx = Math.floor(Math.random() * availableCells.length);
         chosenIndex = availableCells[randomIdx];
       } else if (currentDifficulty === "medium") {
-        // Medium mode has a 30% chance of making a mistake (playing a random move)
-        const makeMistake = Math.random() < 0.3;
+        // Medium mode has a 55% chance of making a mistake (playing a random move) so user wins most of the time
+        const makeMistake = Math.random() < 0.55;
         if (makeMistake) {
           const randomIdx = Math.floor(Math.random() * availableCells.length);
           chosenIndex = availableCells[randomIdx];
@@ -513,14 +511,14 @@ export default function GameArea({
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider">
               <span className="hidden sm:inline">
                 {mode === "single" 
-                  ? `Vs Robot (${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)})` 
+                  ? "Vs Robot" 
                   : mode === "local" 
                   ? "Pass & Play" 
                   : "10-Min Room"}
               </span>
               <span className="inline sm:hidden">
                 {mode === "single" 
-                  ? `Bot (${currentDifficulty.charAt(0).toUpperCase() + currentDifficulty.slice(1)})` 
+                  ? "Vs Robot" 
                   : mode === "local" 
                   ? "Local" 
                   : "Online"}
@@ -627,7 +625,7 @@ export default function GameArea({
                 {mode === "online" 
                   ? (onlineRoom?.state.playerO?.username || "Connecting...") 
                   : mode === "single" 
-                  ? `AI (${currentDifficulty.toUpperCase()})` 
+                  ? "AI (Medium)" 
                   : "Local Play"}
               </span>
               {mode === "online" && onlineRoom?.state.playerO && (
