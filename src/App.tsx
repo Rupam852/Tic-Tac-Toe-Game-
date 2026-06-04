@@ -913,20 +913,19 @@ export default function App() {
                     Experience real-time offline training against our recursive Minimax bot, pass-and-play matches, and dynamic 10-minute self-deleting WebSocket rooms.
                   </motion.p>
                 </div>
-
-                {/* Gorgeous glowing PLAY ARENA CTA Button */}
+                {/* Play Arena and Download APK Buttons */}
                 <motion.div
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.5 }}
-                  className="w-full flex justify-center"
+                  className="w-full flex flex-col sm:flex-row items-center justify-center gap-4"
                 >
                   <button
                     onClick={() => {
                       playSound("click", settings.soundVolume);
                       setActiveView("menu");
                     }}
-                    className="group relative rounded-2xl bg-blue-600 px-10 py-5 text-sm font-black uppercase tracking-widest text-white shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.55)] transition-all hover:scale-[1.05] active:scale-[0.95] duration-200"
+                    className="group relative rounded-2xl bg-blue-600 px-10 py-5 text-sm font-black uppercase tracking-widest text-white shadow-[0_0_30px_rgba(59,130,246,0.3)] hover:shadow-[0_0_40px_rgba(59,130,246,0.55)] transition-all hover:scale-[1.05] active:scale-[0.95] duration-200 w-full sm:w-auto"
                   >
                     <div className="absolute inset-0 bg-linear-to-r from-blue-500 to-indigo-500 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-0"></div>
                     <span className="relative z-10 flex items-center justify-center gap-3">
@@ -934,30 +933,19 @@ export default function App() {
                       PLAY ARENA
                     </span>
                   </button>
-                </motion.div>
 
-                {/* Android App Sideload Sourced Download Banner (Website Only) */}
-                {!isNative && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 15 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.5 }}
-                    className="w-full flex flex-col items-center gap-3 pt-6 border-t border-slate-200/5 mt-4"
-                  >
-                    <span className="text-[11px] font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase">
-                      Play this game in mobile app
-                    </span>
+                  {!isNative && (
                     <a
                       href="https://drive.google.com/file/d/1LrohWAKAXzV3FEQ6YdeHi_7qZmP8F_WB/view?usp=sharing"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="group flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900/60 dark:hover:bg-slate-900 dark:border dark:border-slate-800 hover:scale-[1.03] active:scale-[0.97] transition-all duration-200 shadow-md shadow-blue-500/5 cursor-pointer"
+                      className="group flex items-center justify-center gap-3 px-10 py-5 rounded-2xl text-sm font-black uppercase tracking-widest text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-900/60 dark:hover:bg-slate-900 dark:border dark:border-slate-800 hover:scale-[1.05] active:scale-[0.95] transition-all duration-200 shadow-md cursor-pointer w-full sm:w-auto"
                     >
-                      <Download className="h-4 w-4 text-blue-500 dark:text-blue-400 group-hover:translate-y-0.5 transition-transform" />
-                      Android App
+                      <Download className="h-5 w-5 text-blue-550 dark:text-blue-400 group-hover:translate-y-0.5 transition-transform" />
+                      Download APK
                     </a>
-                  </motion.div>
-                )}
+                  )}
+                </motion.div>
               </div>
             )}
 
